@@ -40,7 +40,17 @@ namespace ModernDev.InTouch
             InitTimer();
         }
 
-#endregion
+        public APISession(string accessToken, int userId)
+        {
+            AccessToken = accessToken;
+            UserId = userId;
+            Duration = TimeSpan.Zero;
+            IsEndless = true;
+
+            _sessionStoredDateTime = DateTime.Now;
+        }
+
+        #endregion
 
         /// <summary>
         /// Occurs when the <see cref="AccessToken"/> expires.
@@ -73,13 +83,30 @@ namespace ModernDev.InTouch
         /// <summary>
         /// The amount of time left before session expires.
         /// </summary>
-        public TimeSpan TimeRemains => Duration - (DateTime.Now - _sessionStoredDateTime);
+        public TimeSpan TimeRemains
+        {
+            get
+            {
+                if (IsEndless)
+                    return TimeSpan.Zero;
+                return Duration - (DateTime.Now - _sessionStoredDateTime);
+            }
+        }
 
         /// <summary>
         /// Whether the session is expired.
         /// </summary>
-        public bool IsExpired => TimeRemains.TotalSeconds <= 0;
+        public bool IsExpired
+        {
+            get
+            {
+                if (IsEndless)
+                    return false;
+                return TimeRemains.TotalSeconds <= 0;
+            }
+        }
 
+        public bool IsEndless { get; private set; } = false;
 #endregion
 
 #region Methods

@@ -421,19 +421,15 @@ namespace ModernDev.InTouch
         /// </summary>
         /// <param name="newSession">The new <see cref="APISession"/> instance.</param>
         /// <exception cref="ArgumentNullException">Thrown when a <code>newSession</code> is <code>null</code>.</exception>
-        internal void SetSessionData(APISession newSession)
+        public void SetSessionData(APISession newSession)
         {
-            if (newSession == null)
-            {
-                throw new ArgumentNullException(nameof(newSession), "Value cannot be null.");
-            }
-
-            if (Session != null)
+            if (Session != null && !Session.IsEndless)
             {
                 Session.AccessTokenExpired -= AccessTokenExpired;
             }
 
-            newSession.AccessTokenExpired += AccessTokenExpired;
+            if (newSession != null && !newSession.IsEndless)
+                newSession.AccessTokenExpired += AccessTokenExpired;
 
             Session = newSession;
         }
@@ -714,7 +710,9 @@ namespace ModernDev.InTouch
                 when (ex.GetType() != typeof (InTouchException) &&
                       ex.GetType() != typeof (InTouchResponseErrorException))
             {
-                throw new InTouchException("An exception has occurred while parsing request response", ex);
+                var iex = new InTouchException("An exception has occurred while parsing request response", ex);
+                iex.Data["json"] = json;
+                throw iex;
             }
 
             return new Response<T>(errObj, dataObj, IncludeRawResponse ? json : null);
