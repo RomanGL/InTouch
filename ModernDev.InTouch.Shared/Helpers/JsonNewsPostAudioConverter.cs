@@ -13,6 +13,8 @@
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ModernDev.InTouch
 {
@@ -26,9 +28,20 @@ namespace ModernDev.InTouch
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObj = serializer.Deserialize<JObject>(reader);
+            var itemsObj = jObj["items"];
 
-            if (jObj["items"] != null)
+            if (itemsObj != null)
             {
+                var arr = (JArray)itemsObj;
+                for (int i = 0; i < arr.Count; i++)
+                {
+                    if (arr[i].Type == JTokenType.Boolean)
+                    {
+                        arr[i].Remove();
+                        i--;
+                    }
+                }
+
                 return jObj.ToObject<ItemsList<Audio>>();
             }
             else

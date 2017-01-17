@@ -27,6 +27,14 @@ namespace ModernDev.InTouch
     [DataContract]
     public class ResponseError : EventArgs
     {
+        public ResponseError() { }
+
+        public ResponseError(int code, string message)
+        {
+            Code = code;
+            Message = message;
+        }
+
         /// <summary>
         /// Error code.
         /// </summary>
