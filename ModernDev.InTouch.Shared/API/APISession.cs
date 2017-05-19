@@ -50,6 +50,12 @@ namespace ModernDev.InTouch
             _sessionStoredDateTime = DateTime.Now;
         }
 
+        public APISession(string accessToken, int userId, string sessionSecret)
+            : this(accessToken, userId)
+        {
+            SessionSecret = sessionSecret;
+        }
+
         #endregion
 
         /// <summary>
@@ -74,6 +80,11 @@ namespace ModernDev.InTouch
         /// The authorized user ID.
         /// </summary>
         public int UserId { get; }
+
+        /// <summary>
+        /// The session secret.
+        /// </summary>
+        public string SessionSecret { get; }
 
         /// <summary>
         /// <see cref="AccessToken"/> life time.

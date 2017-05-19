@@ -59,9 +59,19 @@ namespace ModernDev.InTouch
         public string ClientSecret { get; private set; }
 
         /// <summary>
+        /// The used HttpClient User-Agent.
+        /// </summary>
+        public string UserAgent { get; private set; }
+
+        /// <summary>
+        /// Calculates MD5-hash for input string. 
+        /// </summary>
+        public Func<string, string> Md5Func { get; set; }
+        
+        /// <summary>
         /// The used API version.
         /// </summary>
-        public const string APIVersion = "5.52";
+        public const string APIVersion = "5.57";    // 5.52
 
         /// <summary>
         /// Determines the language for the data to be displayed on.
@@ -258,10 +268,11 @@ namespace ModernDev.InTouch
         /// </summary>
         /// <param name="throwExceptionOnResponseError">Whether the raw response string should be included in request response object.</param>
         /// <param name="includeRawResponse">Whether the raw response string should be included in request response object.</param>
-        public InTouch(bool throwExceptionOnResponseError = false, bool includeRawResponse = false)
+        public InTouch(bool throwExceptionOnResponseError = false, bool includeRawResponse = false, string userAgent = null)
         {
             ThrowExceptionOnResponseError = throwExceptionOnResponseError;
             IncludeRawResponse = includeRawResponse;
+            UserAgent = userAgent;
 
             Account = new AccountMethods(this);
             Users = new UsersMethods(this);
@@ -305,16 +316,17 @@ namespace ModernDev.InTouch
         /// <param name="clientSecret">Your application secret.</param>
         /// <param name="throwExceptionOnResponseError">Whether the raw response string should be included in request response object.</param>
         /// <param name="includeRawResponse">Whether the raw response string should be included in request response object.</param>
-        public InTouch(int clientId, string clientSecret, bool throwExceptionOnResponseError = false,
-            bool includeRawResponse = false) : this(throwExceptionOnResponseError, includeRawResponse)
+        public InTouch(int clientId, string clientSecret, string userAgent = null, bool throwExceptionOnResponseError = false,
+            bool includeRawResponse = false) : this(throwExceptionOnResponseError, includeRawResponse, userAgent)
         {
             SetApplicationSettings(clientId, clientSecret);
         }
         
         internal InTouch(HttpMessageHandler httpMessageHandler, int clientId, string clientSecret,
+            string userAgent = null,
             bool throwExceptionOnResponseError = false,
             bool includeRawResponse = false)
-            : this(clientId, clientSecret, throwExceptionOnResponseError, includeRawResponse)
+            : this(clientId, clientSecret, userAgent, throwExceptionOnResponseError, includeRawResponse)
         {
             _httpMessageHandler = httpMessageHandler;
         }
@@ -501,7 +513,7 @@ namespace ModernDev.InTouch
                 InitApiClient();
             }
 
-            var normalizedParams = NormalizeRequestParams(methodParams, isOpenMethod);
+            var normalizedParams = NormalizeRequestParams(methodParams, isOpenMethod, methodName);
 
             CacheReqData(methodName, normalizedParams, isOpenMethod, path);
 
@@ -667,8 +679,12 @@ namespace ModernDev.InTouch
                 : new HttpClient();
 
             _apiClient.BaseAddress = _baseApiUri;
+            
             _apiClient.DefaultRequestHeaders.Accept.Clear();
             _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            if (!String.IsNullOrWhiteSpace(UserAgent))
+                _apiClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
         }
 
         internal Response<T> ParseJsonReponse<T>(string json, string path = null)
@@ -735,12 +751,13 @@ namespace ModernDev.InTouch
         }
 
         private Dictionary<string, string> NormalizeRequestParams(Dictionary<string, string> reqParams = null,
-            bool isOpenMethod = false)
+            bool isOpenMethod = false, string method = null)
         {
             var apiParams = reqParams ?? new Dictionary<string, string>();
-
+            
             apiParams["access_token"] = Session?.AccessToken ?? "";
             apiParams["v"] = $"{APIVersion}";
+            apiParams["lang"] = DataLanguage == Langs.UsersCurrentLanguage ? _dataLang : ToEnumString(DataLanguage);
             apiParams["https"] = $"{(AlowHttpsLinks ? 1 : 0)}";
 
             if (TestMode)
@@ -748,9 +765,26 @@ namespace ModernDev.InTouch
                 apiParams["test_mode"] = "1";
             }
 
-            apiParams["lang"] = DataLanguage == Langs.UsersCurrentLanguage ? _dataLang : ToEnumString(DataLanguage);
+            if (method != null && Session.SessionSecret != null && Md5Func != null)
+            {
+                const string format = "/method/{0}?{1}";
+                string paramsString = apiParams.Keys.Aggregate("", (current, s) =>
+                     AddToPoint(current, String.Format("{0}={1}", s, apiParams[s]), "&"));
+                
+                string forMd5 = String.Format(format, method, paramsString + Session.SessionSecret);
+                string sig = Md5Func(forMd5);
+
+                apiParams["sig"] = sig;
+            }
 
             return apiParams.ToDictionary(kvp => kvp.Key, kvp => kvp.Value?.ToString());
+        }
+
+        public static string AddToPoint(string basis, string adding, string separator)
+        {
+            if (basis == "")
+                return adding;
+            return basis + separator + adding;
         }
 
         private void AccessTokenExpired(object sender, EventArgs e) => OnAuthorizationFailed(null);
