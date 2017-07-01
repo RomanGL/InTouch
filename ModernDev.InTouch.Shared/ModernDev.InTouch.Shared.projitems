@@ -170,6 +170,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Enums\VideoCatalogItemTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\VideoSearchFilters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\JsonAttachmentsConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\JsonAudioCatalogItemSourceConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\JsonAudioCatalogItemTypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\JsonCoordinatesConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\JsonIProfileItemListConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\JsonIVideoCatalogItemsConverter.cs" />
@@ -209,6 +211,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Attachments\Sticker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Attachments\Video.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\AudioAlbum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\AudioCatalogItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\AudioCatalogItemSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\AudioCatalogItemType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\AudioUploadResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\AuthStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\BanInfo.cs" />
@@ -335,6 +340,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Street.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Tag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Tags.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Thumb.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\TitledItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Topic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\TopicsList.cs" />

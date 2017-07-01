@@ -110,6 +110,20 @@ namespace ModernDev.InTouch
         [JsonProperty("no_search")]
         public bool NoSearch { get; set; }
 
+        /// <summary>
+        /// Track album.
+        /// </summary>
+        [DataMember]
+        [JsonProperty("album")]
+        public AudioAlbum Album { get; set; }
+
+        /// <summary>
+        /// True, if this audio is a hight quality.
+        /// </summary>
+        [DataMember]
+        [JsonProperty("is_hq")]
+        public bool IsHQ { get; set; }
+
         #endregion
 
         public override string ToString()

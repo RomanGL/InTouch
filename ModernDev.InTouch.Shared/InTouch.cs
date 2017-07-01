@@ -71,7 +71,7 @@ namespace ModernDev.InTouch
         /// <summary>
         /// The used API version.
         /// </summary>
-        public const string APIVersion = "5.57";    // 5.52
+        public const string APIVersion = "5.67";    // 5.52, 5.57
 
         /// <summary>
         /// Determines the language for the data to be displayed on.

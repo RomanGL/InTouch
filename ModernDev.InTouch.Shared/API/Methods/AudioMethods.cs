@@ -34,6 +34,9 @@ namespace ModernDev.InTouch
 
         #region Methods
 
+        public async Task<Response<ItemsList<AudioCatalogItem>>> GetCatalog()
+            => await Request<ItemsList<AudioCatalogItem>>("getCatalog", new MethodParams());
+
         /// <summary>
         /// Returns a list of audio files of a user or community.
         /// </summary>

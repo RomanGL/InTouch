@@ -10,13 +10,22 @@
  * Licensed under the GPLv3 license.
  */
 
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
+
 namespace ModernDev.InTouch
 {
     /// <summary>
     /// Audio album.
     /// </summary>
+    [DataContract]
     public class AudioAlbum : BaseAlbum
     {
-        
+        /// <summary>
+        /// Album thumb.
+        /// </summary>
+        [DataMember]
+        [JsonProperty("thumb")]
+        public Thumb Thumb { get; set; }
     }
 }
