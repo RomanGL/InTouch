@@ -69,5 +69,12 @@ namespace ModernDev.InTouch
         [DataMember]
         [JsonProperty("audios")]
         public List<Audio> Audios { get; set; }
+
+        /// <summary>
+        /// Item playlists.
+        /// </summary>
+        [DataMember]
+        [JsonProperty("playlists")]
+        public List<Playlist> Playlists { get; set; }
     }
 }

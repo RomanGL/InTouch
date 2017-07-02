@@ -33,6 +33,21 @@ namespace ModernDev.InTouch
         #endregion
 
         #region Methods
+        
+        public async Task<Response<bool>> DeletePlaylist(int playlistId, int? ownerId = null)
+            => await Request<bool>("deletePlaylist", new MethodParams
+            {
+                { "playlist_id", playlistId },
+                { "owner_id", ownerId ?? API.Session.UserId}
+            });
+
+        public async Task<Response<ItemsList<Playlist>>> GetPlaylists(int? ownerId = null, int count = 50, int offset = 0)
+            => await Request<ItemsList<Playlist>>("getPlaylists", new MethodParams
+            {
+                { "owner_id", ownerId ?? API.Session.UserId },
+                { "count", count },
+                { "offset", offset }
+            });
 
         public async Task<Response<ItemsList<AudioCatalogItem>>> GetCatalog()
             => await Request<ItemsList<AudioCatalogItem>>("getCatalog", new MethodParams());
@@ -41,20 +56,21 @@ namespace ModernDev.InTouch
         /// Returns a list of audio files of a user or community.
         /// </summary>
         /// <param name="ownerId">ID of the user or community that owns the audio file. Use a negative value to designate a community ID. </param>
-        /// <param name="albumId">Audio album ID.</param>
+        /// <param name="playlistId">Audio album ID.</param>
         /// <param name="audioIds">IDs of the audio files to return.</param>
         /// <param name="count">Number of audio files to return.</param>
         /// <param name="offset">Offset needed to return a specific subset of audio files.</param>
         /// <returns>Returns a <see cref="List{T}"/> of <see cref="Audio"/> objects.</returns>
-        public async Task<Response<ItemsList<Audio>>> Get(int? ownerId = null, int? albumId = null,
-            List<int> audioIds = null, int count = 100, int offset = 0)
+        public async Task<Response<ItemsList<Audio>>> Get(int? ownerId = null, int? playlistId = null,
+            List<int> audioIds = null, int count = 100, int offset = 0, string accessKey = null)
             => await Request<ItemsList<Audio>>("get", new MethodParams
             {
                 {"owner_id", ownerId},
-                {"album_id", albumId},
+                {"playlist_id", playlistId},
                 {"audio_ids", audioIds},
                 {"offset", offset},
-                {"count", count, false, new[] {0, 6000}}
+                {"count", count, false, new[] {0, 6000}},
+                { "access_key", accessKey }
             });
 
         /// <summary>

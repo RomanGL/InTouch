@@ -108,6 +108,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Enums\AccessPermissions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\AccountInfoFields.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\AttachmentsTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\AudioCatalogItemSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\AudioCatalogItemType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\AudioGenres.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\AuthorizationDisplayTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\BanTypes.cs" />
@@ -148,6 +150,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Enums\ObjectTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\OccupationTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\PhotoSizeTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\PlaylistType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\PostFilterTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\PostSourceDataTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\PostSourcePlatforms.cs" />
@@ -212,8 +215,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Attachments\Video.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\AudioAlbum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\AudioCatalogItem.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\AudioCatalogItemSource.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\AudioCatalogItemType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\AudioUploadResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\AuthStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\BanInfo.cs" />
@@ -319,6 +320,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Place.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\PlaceStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\PlaceType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Playlist.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\PostSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\PostStats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Preview.cs" />
